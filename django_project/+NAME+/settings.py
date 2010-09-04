@@ -63,6 +63,7 @@ ROOT_URLCONF = '{{ project_name }}.urls'
 
 INSTALLED_APPS = (
     'django.contrib.admin',
+    'django.contrib.admindocs',
     'django.contrib.auth', # see AUTHENTICATION
     # 'django.contrib.comments', # if you want native comments
     'django.contrib.contenttypes',

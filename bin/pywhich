@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+# encoding: utf-8
+"""
+pywhich.py
+
+Created by Vince Veselosky on 2010-09-04.
+Copyright (c) 2010 Vincent Veselosky.
+"""
+
+import sys
+import os
+
+def main():
+    pkg = sys.argv[1]
+    the_module = __import__(pkg, globals(), locals(), ['__file__'], -1)
+    print the_module.__file__
+
+
+if __name__ == '__main__':
+    main()
+

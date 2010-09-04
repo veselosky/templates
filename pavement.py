@@ -1,6 +1,8 @@
+import os
+from random import choice
+
 from paver.easy import *
 import paver.virtual
-import os
 
 options(
     virtualenv = Bunch(
@@ -120,7 +122,8 @@ def django_app(options):
 
 
 # Lifted from django-extensions and modified slightly -VV
-def copy_template(template_dir, copy_to, project_name, target=None):
+def copy_template(template_dir, copy_to, project_name, target=None, 
+    secret_key = ''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(52)])):
     """copies the specified template directory to the copy_to location"""
     import shutil
     from django.core.management.base import _make_writeable
@@ -151,7 +154,10 @@ def copy_template(template_dir, copy_to, project_name, target=None):
                 path_new = path_new[:-5]
             fp_old = open(path_old, 'r')
             fp_new = open(path_new, 'w')
-            fp_new.write(fp_old.read().replace('{{ project_name }}', project_name))
+            fp_new.write(fp_old.read()
+                .replace('{{ project_name }}', project_name)
+                .replace('{{ secret_key }}', secret_key)
+            )
             fp_old.close()
             fp_new.close()
             try:
@@ -159,7 +165,6 @@ def copy_template(template_dir, copy_to, project_name, target=None):
                 _make_writeable(path_new)
             except OSError:
                 sys.stderr.write("Notice: Couldn't set permission bits on %s. You're probably using an uncommon filesystem setup. No problem.\n" % path_new)
-
 
 
 

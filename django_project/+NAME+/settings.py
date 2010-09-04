@@ -7,7 +7,8 @@ import django
 MANAGERS = ADMINS = (('Vince Veselosky', 'vince@control-escape.com'),)
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
-SECRET_KEY = '' # Make this unique, and don't share it with anybody.
+# Make the SECRET_KEY unique, and don't share it with anybody.
+SECRET_KEY = '{{ secret_key }}'
 INTERNAL_IPS = ('127.0.0.1',)
 
 ################

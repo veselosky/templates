@@ -7,8 +7,11 @@ options(
         basedir = path(os.environ['WORKON_HOME']),
         no_site_packages = True,
     ),
-    new_django_project = Bunch(
+    django_project = Bunch(
         project_template = '/Users/vince/templates/django_project'
+    ),
+    django_app = Bunch(
+        template = '/Users/vince/templates/django_app'
     )
 )
 
@@ -42,7 +45,7 @@ def django_env(options, args):
         'django-extensions',
         'django-sugar',
         # 'django-taggit',
-        'PIL',
+        'PIL', # required for ImageField
         # 'pylint',
         'python-dateutil',
         'python-memcached',
@@ -63,9 +66,9 @@ def django_env(options, args):
     # TODO add DJANGO_SETTINGS_MODULE to postactivate script
 
     # Bootstrap the django code
-    options.new_django_project['name'] = project_name
-    options.new_django_project['root_dir'] = envdir / 'project'
-    call_task('new_django_project')
+    options.django_project['name'] = project_name
+    options.django_project['root_dir'] = envdir / 'project'
+    call_task('django_project')
 
 
 @task
@@ -74,14 +77,14 @@ def django_env(options, args):
     ('root_dir=', 'd', 'Directory in which to start the project, default=./{name}'),
     ('project_template=', 't', 'Project template')
     ])
-def new_django_project(options):
+def django_project(options):
     """Create a new Django project (replaces startproject)"""
-    project_name = options.new_django_project.name
-    project_template = options.new_django_project.project_template
-    if options.new_django_project.get('root_dir'):
-        root_dir = path(options.new_django_project.root_dir).realpath()
+    project_name = options.django_project.name
+    project_template = options.django_project.project_template
+    if options.django_project.get('root_dir'):
+        root_dir = path(options.django_project.root_dir).realpath()
     else:
-        root_dir = path('./' + options.new_django_project.name).realpath()
+        root_dir = path('./' + options.django_project.name).realpath()
 
     # Start new Django project
     try:
@@ -90,6 +93,30 @@ def new_django_project(options):
         pass
 
     copy_template(project_template, root_dir, project_name)
+
+
+@task
+@cmdopts([
+    ('name=', 'n', 'Python name for the app'),
+    ('root_dir=', 'd', 'Directory in which to start the app, default=./{name}'),
+    ('template=', 't', 'App template directory')
+    ])
+def django_app(options):
+    """Create a new standalone (reusable) Django app (replaces startapp)"""
+    name = options.django_app.name
+    template_dir = options.django_app.template
+    if options.django_app.get('root_dir'):
+        root_dir = path(options.django_app.root_dir).realpath()
+    else:
+        root_dir = path('./' + options.django_app.name).realpath()
+
+    # Start new Django project
+    try:
+        root_dir.mkdir()
+    except OSError: # already exists
+        pass
+
+    copy_template(template_dir, root_dir, name)
 
 
 # Lifted from django-extensions and modified slightly -VV

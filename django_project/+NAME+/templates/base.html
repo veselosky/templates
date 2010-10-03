@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+{% spaceless %}
+<html lang="en">
+<head>
+    {% block stylesheets %}
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/screen.css" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/print.css" type="text/css" media="print">
+    <!--[if lt IE 8]>
+      <link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/ie.css" type="text/css" media="screen, projection">
+    <![endif]-->
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/site.css" type="text/css" media="screen, projection">
+    {% endblock stylesheets %}
+    <title>{% block title %}{% endblock title %}{% block title_suffix %}{% endblock title_suffix %}</title>
+    {% block extra_head %}<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    {% endblock extra_head %}
+</head>
+<body><div class="container">
+
+<div class='header span-24'>
+    <div class='span-12'>TODO image</div>
+    {# TODO Logic to switch from H1 on HP to style on interior page #}
+    <div class='span-12 last'><h1>Site Name</h1></div>
+</div>
+
+<div class='navigation span-24'>
+    <ul class='nav'>
+        <li><a href="/">Home</a></li>
+        <li>TODO Search Box</li>
+    </ul>
+</div>
+
+<div class='maincontent span-16 border'>
+    {% block maincontent %}{% endblock maincontent %}
+</div>
+
+<div class='rightrail span-8 last'>
+    {% block secondarycontent %}{% endblock secondarycontent %}
+</div>
+
+<div class='footer prepend-top'>
+    <div class="span-24">
+        <ul class="nav">
+            <li><a href="/">Home</a></li>
+        </ul>
+    </div>
+</div>
+</div></body>
+</html>
+{% endspaceless %}

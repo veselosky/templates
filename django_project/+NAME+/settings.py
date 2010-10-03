@@ -42,14 +42,21 @@ USE_L10N = True
 
 ######################
 # STATIC MEDIA
-# Absolute path to the directory that holds media.
+# Absolute path to the directory that holds uploaded media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = '%s/static/' % PROJECT_ROOT
 
+# Absolute path to the directory that holds static media that ships with
+# your project. From django-staticfiles.
+STATIC_ROOT = '%s/static/' % PROJECT_ROOT
+
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
+# Examples: "http://media.lawrence.com", "http://example.com/media/", "/uploads/"
 MEDIA_URL = '/site_media/'
+
+# URL that handles the media served from STATIC_ROOT.
+STATIC_URL = '/site_media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -67,7 +74,6 @@ INSTALLED_APPS = (
     'django.contrib.auth', # see AUTHENTICATION
     # 'django.contrib.comments', # if you want native comments
     'django.contrib.contenttypes',
-    # 'django.contrib.databrowse', # Maybe cool
     'django.contrib.flatpages',
     'django.contrib.humanize',
     'django.contrib.messages', # see MESSAGES
@@ -76,6 +82,7 @@ INSTALLED_APPS = (
     # 'django.contrib.sitemaps', # if you want them
     'django.contrib.sites',
     'south',
+    'staticfiles',
 )
 
 TEMPLATE_DIRS = (
@@ -104,6 +111,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     "django.core.context_processors.request", # not default
     "django.contrib.messages.context_processors.messages",
+    'staticfiles.context_processors.static_url',
 )
 
 # List of callables that know how to import templates from various sources.
@@ -115,20 +123,25 @@ TEMPLATE_LOADERS = (
 
 ######################
 # SESSIONS
-# Being a RESTafarian, I don't like sessions, but certain tools depend on them,
-# so we do the least painful version.
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+# Being a RESTafarian, I don't like sessions, but certain tools depend on them.
+# The cache-only backend with locmem expires sessions on server restart,
+# so we use write-through storage.
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 SESSION_SAVE_EVERY_REQUEST = False # Change this and DIE!
 
 ######################
 # CACHE
-# Because we use cache for sessions, dummy doesn't work!
+# Note: If you use cache-only storage for sessions, dummy doesn't work!
 # Obviously we prefer memcached, so turn that on if you have it:
+# CACHE_BACKEND = 'newcache://127.0.0.1:11211/?binary=true'
 # CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 CACHE_BACKEND = 'locmem://'
 CACHE_MIDDLEWARE_SECONDS = 300
-CACHE_MIDDLEWARE_KEY_PREFIX = SITE_ID
+CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_ROOT + SITE_ID
 CACHE_MIDDLEWARE_ANONYMOUS_ONLY = True
+# If using django-newcache, you may want these:
+FLAVOR = 'prod'
+CACHE_VERSION = 1
 
 ######################
 # AUTHENTICATION

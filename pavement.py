@@ -43,10 +43,9 @@ def django_env(options, args):
         'docutils>=0.3',
         'django>=1.2,<1.3',
         'django-debug-toolbar',
-        # 'django-disqus', # if you want hosted comments
         'django-extensions',
+        'django-staticfiles',
         'django-sugar',
-        # 'django-taggit',
         'PIL', # required for ImageField
         # 'pylint',
         'python-dateutil',

@@ -1,0 +1,9 @@
+docutils >= 0.3
+django >= 1.2, < 1.3
+django-extensions
+django-staticfiles
+PIL # required for ImageField
+python-dateutil
+python-memcached
+pytz
+south > 0.7

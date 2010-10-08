@@ -45,7 +45,6 @@ def django_env(options, args):
         'django-debug-toolbar',
         'django-extensions',
         'django-staticfiles',
-        'django-sugar',
         'PIL', # required for ImageField
         # 'pylint',
         'python-dateutil',
@@ -55,21 +54,26 @@ def django_env(options, args):
     ]
     
     # consider additional command line args to be packages to install
-    if len(args) > 1:
-        options.virtualenv['packages_to_install'].extend(args[1:])
+    # Temporarily removed while refactoring -VV 2010-10-06
+    # if len(args) > 1:
+    #     options.virtualenv['packages_to_install'].extend(args[1:])
 
     # initialize a virtualenv
-    os.mkdir(envdir)
+    # os.mkdir(envdir)
+    # path.chdir(envdir)
+    # call_task('paver.virtual.bootstrap')
+    # The bootstrap script doesn't use all the swell virtualenvwrapper hooks. :(
+    # sh('python bootstrap.py')
+    sh('source /usr/local/bin/virtualenvwrapper.sh; mkvirtualenv --no-site-packages --distribute %s'%project_name)
     path.chdir(envdir)
-    call_task('paver.virtual.bootstrap')
-    sh('python bootstrap.py')
-
-    # TODO add DJANGO_SETTINGS_MODULE to postactivate script
-
+    
     # Bootstrap the django code
     options.django_project['name'] = project_name
     options.django_project['root_dir'] = envdir / 'project'
     call_task('django_project')
+    sh('echo "export DJANGO_SETTINGS_MODULE=%s.settingsdev" >> ./bin/postactivate'%project_name)
+    sh('echo "unset DJANGO_SETTINGS_MODULE" >> ./bin/postdeactivate')
+    sh('source bin/activate; pip install -r project/requirements-dev.txt')
 
 
 @task

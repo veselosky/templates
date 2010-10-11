@@ -81,6 +81,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions', # see SESSIONS
     # 'django.contrib.sitemaps', # if you want them
     'django.contrib.sites',
+    'google_analytics',
     'south',
     'staticfiles',
 )
@@ -155,7 +156,9 @@ CACHE_VERSION = 1
 # MESSAGES
 MESSAGE_STORAGE = 'django.contrib.messages.storage.fallback.FallbackStorage'
 
-
+######################
+# GOOGLE ANALYTICS
+GOOGLE_ANALYTICS_MODEL = True
 
 
 

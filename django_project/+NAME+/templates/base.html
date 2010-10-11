@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
-{% spaceless %}
+{% spaceless %}{% load analytics %}
 <html lang="en">
 <head>
     {% block stylesheets %}
@@ -12,39 +12,55 @@
     <link rel="stylesheet" href="{{ MEDIA_URL }}css/site.css" type="text/css" media="screen, projection">
     {% endblock stylesheets %}
     <title>{% block title %}{% endblock title %}{% block title_suffix %}{% endblock title_suffix %}</title>
-    {% block extra_head %}<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    {% endblock extra_head %}
+    {% block htmlhead %}<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    {% analytics_async %}
+    {% endblock htmlhead %}
 </head>
 <body><div class="container">
 
+{% block HEADER %}
 <div class='header span-24'>
+    {% block header %}
     <div class='span-12'>TODO image</div>
     {# TODO Logic to switch from H1 on HP to style on interior page #}
     <div class='span-12 last'><h1>Site Name</h1></div>
+    {% endblock header %}
 </div>
+{% endblock HEADER %}
 
+{% block NAVIGATION %}
 <div class='navigation span-24'>
     <ul class='nav'>
+        {% block navitems %}
         <li><a href="/">Home</a></li>
         <li>TODO Search Box</li>
+        {% endblock navitems %}
     </ul>
 </div>
+{% endblock NAVIGATION %}
 
-<div class='maincontent span-16 border'>
-    {% block maincontent %}{% endblock maincontent %}
+{% block PRIMARY %}
+<div class='primary content span-16'>
+    {% block content %}{% endblock content %}
 </div>
+{% endblock PRIMARY %}
 
-<div class='rightrail span-8 last'>
+{% block SECONDARY %}
+<div class='secondary span-8 last'>
     {% block secondarycontent %}{% endblock secondarycontent %}
 </div>
+{% endblock SECONDARY %}
 
-<div class='footer prepend-top'>
-    <div class="span-24">
-        <ul class="nav">
-            <li><a href="/">Home</a></li>
-        </ul>
-    </div>
+{% block TERTIARY %}{% block tertiarycontent %}{% endblock tertiarycontent %}{% endblock TERTIARY %}
+
+{% block FOOTER %}
+<div class='footer prepend-top span-24'>
+    {% block footer %}{% endblock footer %}
 </div>
-</div></body>
+{% endblock FOOTER %}
+</div>
+{#  Deferred JavaScript goes right before the close body tag, so that all HTML can render without being blocked by loading JS. #}
+{% block deferred %}{% endblock deferred %}
+</body>
 </html>
 {% endspaceless %}

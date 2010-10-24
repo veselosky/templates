@@ -73,6 +73,7 @@ def django_env(options, args):
     call_task('django_project')
     sh('echo "export DJANGO_SETTINGS_MODULE=%s.settingsdev" >> ./bin/postactivate'%project_name)
     sh('echo "unset DJANGO_SETTINGS_MODULE" >> ./bin/postdeactivate')
+    sh('source bin/activate; cd project; python setup.py develop')
     sh('source bin/activate; pip install -r project/requirements-dev.txt')
 
 

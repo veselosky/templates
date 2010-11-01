@@ -44,24 +44,25 @@ USE_L10N = True
 # STATIC MEDIA
 # Absolute path to the directory that holds uploaded media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '%s/static/' % PROJECT_ROOT
+MEDIA_ROOT = '%s/static/uploads/' % PROJECT_ROOT
 
 # Absolute path to the directory that holds static media that ships with
-# your project. From django-staticfiles.
+# your project. From django-staticfiles. This is the *destination* of the
+# build_static management command.
 STATIC_ROOT = '%s/static/' % PROJECT_ROOT
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/", "/uploads/"
-MEDIA_URL = '/site_media/'
+MEDIA_URL = '/media/uploads/'
 
 # URL that handles the media served from STATIC_ROOT.
-STATIC_URL = '/site_media/'
+STATIC_URL = '/media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 ######################
 # CODE config

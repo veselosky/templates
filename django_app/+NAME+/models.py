@@ -1,3 +1,4 @@
+# encoding: utf-8
 """Models for {{ project_name }}"""
 
 from django.db import models

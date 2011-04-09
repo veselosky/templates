@@ -1,12 +1,11 @@
 # Django settings for {{ project_name }} project.
 import os
-import django
 
 ################
 # Administrivia
 MANAGERS = ADMINS = (('Vince Veselosky', 'vince@control-escape.com'),)
-DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
-PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
+PROJECT_HOME = os.path.dirname(os.path.realpath(__file__))
+PROJECT_ROOT = os.path.dirname(PROJECT_HOME)
 # Make the SECRET_KEY unique, and don't share it with anybody.
 SECRET_KEY = '{{ secret_key }}'
 INTERNAL_IPS = ('127.0.0.1',)
@@ -32,10 +31,7 @@ DATABASES = {
 
 ##################
 # LOCALIZATION
-# Vince note: I want Django to store all values as UTC. I'll translate
-# them to local in templates if needed, hence the addition LOCAL*.
-TIME_ZONE = 'UTC' # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-LOCAL_TIME_ZONE = 'America/New_York'
+TIME_ZONE = 'America/New_York' # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 LANGUAGE_CODE = 'en-us' # http://www.i18nguy.com/unicode/language-identifiers.html
 USE_I18N = True
 USE_L10N = True
@@ -48,7 +44,7 @@ MEDIA_ROOT = '%s/static/uploads/' % PROJECT_ROOT
 
 # Absolute path to the directory that holds static media that ships with
 # your project. From django-staticfiles. This is the *destination* of the
-# build_static management command.
+# collectstatic management command.
 STATIC_ROOT = '%s/static/' % PROJECT_ROOT
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
@@ -82,15 +78,15 @@ INSTALLED_APPS = (
     'django.contrib.sessions', # see SESSIONS
     # 'django.contrib.sitemaps', # if you want them
     'django.contrib.sites',
+    'django.contrib.staticfiles',
     'google_analytics',
     'south',
-    'staticfiles',
 )
 
 TEMPLATE_DIRS = (
     # Example: "/home/html/django_templates" or "C:/www/django/templates".
     # Use absolute paths, not relative paths.
-    '%s/templates' % PROJECT_ROOT
+    '%s/templates' % PROJECT_HOME
 )
 
 MIDDLEWARE_CLASSES = (
@@ -111,9 +107,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
+    "django.core.context_processors.static",
     "django.core.context_processors.request", # not default
     "django.contrib.messages.context_processors.messages",
-    'staticfiles.context_processors.static_url',
 )
 
 # List of callables that know how to import templates from various sources.
@@ -139,8 +135,8 @@ SESSION_SAVE_EVERY_REQUEST = False # Change this and DIE!
 # CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 CACHE_BACKEND = 'locmem://'
 CACHE_MIDDLEWARE_SECONDS = 300
-CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_ROOT + str(SITE_ID)
-CACHE_MIDDLEWARE_ANONYMOUS_ONLY = True
+CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_HOME + str(SITE_ID)
+CACHE_MIDDLEWARE_ANONYMOUS_ONLY = False
 # If using django-newcache, you may want these:
 FLAVOR = 'prod'
 CACHE_VERSION = 1
@@ -151,7 +147,6 @@ CACHE_VERSION = 1
 # LOGIN_URL = '/accounts/login/'
 # LOGOUT_URL = '/accounts/logout/'
 # LOGIN_REDIRECT_URL = '/accounts/profile/'
-
 
 ######################
 # MESSAGES

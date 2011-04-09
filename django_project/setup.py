@@ -13,13 +13,13 @@ setup(
     # Project uses reStructuredText, so ensure that the docutils get
     # installed or upgraded on the target machine
     install_requires = [
-        'docutils>=0.3',
-        'django>=1.2,<1.3',
-        'django-staticfiles',
-        'PIL',
-        'python-dateutil',
-        'pytz',
-        'south>0.7',
+        # 'docutils>=0.3',
+        # 'django>=1.2,<1.3',
+        # 'django-staticfiles',
+        # 'PIL',
+        # 'python-dateutil',
+        # 'pytz',
+        # 'south>0.7',
     ],
 
     include_package_data=True,

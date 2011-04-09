@@ -1,10 +1,19 @@
+# Immensely useful Python tools you don't want to live without
+argparse # Forward compat w/2.7
 docutils >= 0.3
-django >= 1.2, < 1.3
-django-extensions
-http://github.com/clintecker/django-google-analytics/tarball/master
-django-staticfiles
-PIL # required for ImageField
 python-dateutil
 python-memcached
 pytz
+# simplejson # I only support 2.6+, and this is in stdlib as json in 2.6
+unittest2 # Forward compat w/2.7
+
+# Django and essential extensions
+django >= 1.3, < 1.4
+django-extensions
+django-newcache
+# django-staticfiles # contrib in 1.3
+PIL # required for ImageField
 south > 0.7
+
+http://github.com/clintecker/django-google-analytics/tarball/master
+

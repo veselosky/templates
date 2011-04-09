@@ -1,12 +1,29 @@
-import os
-import os.path
-
-import random
+# Do not import anything else with "from", because Fabric will see imported
+# symbols as tasks.
 from fabric.api import *
 
-def django_env(project_name, *packages):
+import os
+import os.path
+import random
+import django.template.defaultfilters as filters
+
+
+def book_project(name, root="~/Documents", template="~/templates/sphinx_project", slug=None):
+    """Create a Sphinx documentation project directory."""
+    if not slug:
+        slug = filters.slugify(name)
+    project_dir = _path(root, slug)
+    try:
+        os.makedirs(project_dir)
+    except OSError: # already exists
+        pass
+    template_dir = _path(template)
+    _copy_template(template_dir, project_dir, name)
+
+
+def django_env(name, *packages):
     """Bootstrap a python virtualenv and a new Django project"""
-    
+    project_name = name
     envdir = _path(os.environ['WORKON_HOME'], project_name)
     with settings(hide('warnings', 'running'), warn_only=True):
         print "Creating virtualenv %s..." % project_name

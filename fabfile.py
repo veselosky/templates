@@ -1,6 +1,7 @@
 # Do not import anything else with "from", because Fabric will see imported
 # symbols as tasks.
 from fabric.api import *
+import fabric.colors as colors
 
 import os
 import os.path
@@ -26,7 +27,7 @@ def django_env(name, *packages):
     project_name = name
     envdir = _path(os.environ['WORKON_HOME'], project_name)
     with settings(hide('warnings', 'running'), warn_only=True):
-        print "Creating virtualenv %s..." % project_name
+        print colors.blue("Creating virtualenv %s..." % project_name, bold=True)
         local('source /usr/local/bin/virtualenvwrapper.sh; mkvirtualenv --no-site-packages %s' % project_name)
 
         # Bootstrap the django code
@@ -36,8 +37,8 @@ def django_env(name, *packages):
         local('echo "export DJANGO_SETTINGS_MODULE=%s.settingsdev" >> %s/bin/postactivate'% (project_name, envdir))
         local('echo "unset DJANGO_SETTINGS_MODULE" >> %s/bin/postdeactivate'% envdir)
 
-        print "Install pip requirements (may take a while)..."
-        with cd(project_dir):
+        print colors.blue("Installing pip requirements (may take a while)...", bold=True)
+        with lcd(project_dir):
             local('source ../bin/activate; pip install -r requirements-dev.txt')
 
 
@@ -51,7 +52,7 @@ def django_project(name, root='.', template='~/templates/django_project'):
     except OSError: # already exists
         pass
 
-    print "Creating Django project %s..." % name
+    print colors.blue("Creating Django project %s..." % name, bold=True)
     _copy_template(project_template, root_dir, name)
 
 
@@ -66,9 +67,25 @@ def django_app(name, root='.', template='~/templates/django_app'):
     except OSError: # already exists
         pass
 
-    print "Creating Django app %s..." % name
+    print colors.blue("Creating Django app %s..." % name, bold=True)
     _copy_template(template_dir, root_dir, name)
 
+def test_colors():
+    """Prints some strings with color output"""
+    print colors.red("red text")
+    print colors.red("Bold red text", bold=True)
+    print colors.green("green text")
+    print colors.green("Bold green text", bold=True)
+    print colors.blue("blue text")
+    print colors.blue("Bold blue text", bold=True)
+    print colors.cyan("cyan text")
+    print colors.cyan("Bold cyan text", bold=True)
+    print colors.yellow("yellow text")
+    print colors.yellow("Bold yellow text", bold=True)
+    print colors.magenta("magenta text")
+    print colors.magenta("Bold magenta text", bold=True)
+    print colors.white("white text")
+    print colors.white("Bold white text", bold=True)
 
 ################################################
 # Utility Functions

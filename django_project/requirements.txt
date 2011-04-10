@@ -1,7 +1,7 @@
 # Immensely useful Python tools you don't want to live without
 argparse # Forward compat w/2.7
 docutils >= 0.3
-python-dateutil
+python-dateutil >= 1.5, <2.0
 python-memcached
 pytz
 # simplejson # I only support 2.6+, and this is in stdlib as json in 2.6

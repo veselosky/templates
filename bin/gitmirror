@@ -1,0 +1,41 @@
+#!/bin/bash
+MIRRORDIR="${1%/}"
+if [ -z $MIRRORDIR ]; then
+    echo "You must provide a mirror directory as an argument."
+    exit 1
+fi
+if [ ! -d $MIRRORDIR ]; then
+    echo "Mirror directory $MIRRORDIR does not exist. Nothing to do."
+    exit 2
+fi
+echo "Scanning $MIRRORDIR for repositories..."
+
+repos=`find $MIRRORDIR -maxdepth 2 -type d -name .git`
+
+if [ -z "$repos" ]; then
+    echo "No repositories found in $MIRRORDIR"
+    exit 3
+fi
+
+for repo in $repos; do
+    the_dir="${repo%/.git}"
+    echo "Examining repo $the_dir"
+    pushd $the_dir >/dev/null
+    if git remote show upstream &>/dev/null && git remote show origin &>/dev/null; then
+        echo "# Updating..."
+        set -e # Bail immediately if anything fails.
+        git remote update
+        # TODO Support merging branches other than master
+        git checkout -f master # Just in case someone messed with it
+        # For now, only automerge if it is fast forward
+        git merge --ff-only origin/master 
+        echo "# Merging upstream changes"
+        git merge -q upstream/master
+        echo "# Pushing to origin"
+        git push origin master
+        set +e
+    else
+        echo "Repo $the_dir does not have remotes for origin and upstream. Skipping."
+    fi
+    popd >/dev/null
+done

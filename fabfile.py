@@ -70,6 +70,22 @@ def django_app(name, root='.', template='~/templates/django_app'):
     print colors.blue("Creating Django app %s..." % name, bold=True)
     _copy_template(template_dir, root_dir, name)
 
+
+# Start new Python project
+def pyproject(name, root='.', template='~/templates/pyproject'):
+    """Create a new Python project (module or application)"""
+    root_dir = _path(root, name)
+    template_dir = _path(template)
+
+    try:
+        os.makedirs(root_dir)
+    except OSError: # already exists
+        pass
+
+    print colors.blue("Creating Python project %s..." % name, bold=True)
+    _copy_template(template_dir, root_dir, name)
+
+
 def test_colors():
     """Prints some strings with color output"""
     print colors.red("red text")
@@ -95,13 +111,13 @@ def _path(*args):
 
 
 # Lifted from django-extensions and modified slightly -VV
-def _copy_template(template_dir, copy_to, project_name, target=None, 
+def _copy_template(template_dir, copy_to, project_name, target=None,
     secret_key = ''.join([random.choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(52)])):
     """copies the specified template directory to the copy_to location"""
     import shutil
     from django.core.management.base import _make_writeable
-    
-    if target == None: 
+
+    if target == None:
         target = project_name
 
     template_dir = os.path.normpath(template_dir)

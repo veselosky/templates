@@ -1,14 +1,14 @@
-# Do not import anything else with "from", because Fabric will see imported
-# symbols as tasks.
-from fabric.api import *
+from fabric.api import hide, lcd, local, settings, task
 import fabric.colors as colors
 
 import os
 import os.path
 import random
+import sys
 import django.template.defaultfilters as filters
 
 
+@task
 def book_project(name, root="~/Documents", template="~/templates/sphinx_project", slug=None):
     """Create a Sphinx documentation project directory."""
     if not slug:
@@ -22,6 +22,7 @@ def book_project(name, root="~/Documents", template="~/templates/sphinx_project"
     _copy_template(template_dir, project_dir, name)
 
 
+@task
 def django_env(name, *packages):
     """Bootstrap a python virtualenv and a new Django project"""
     project_name = name
@@ -42,6 +43,7 @@ def django_env(name, *packages):
             local('source ../bin/activate; pip install -r requirements-dev.txt')
 
 
+@task
 def django_project(name, root='.', template='~/templates/django_project'):
     """Create a new Django project (replaces startproject)"""
     project_template = _path(template)
@@ -57,6 +59,7 @@ def django_project(name, root='.', template='~/templates/django_project'):
 
 
 # Start new Django project
+@task
 def django_app(name, root='.', template='~/templates/django_app'):
     """Create a new standalone Django app (replaces startapp)"""
     root_dir = _path(root, name)
@@ -72,6 +75,7 @@ def django_app(name, root='.', template='~/templates/django_app'):
 
 
 # Start new Python project
+@task
 def pyproject(name, root='.', template='~/templates/pyproject'):
     """Create a new Python project (module or application)"""
     root_dir = _path(root, name)
@@ -86,6 +90,7 @@ def pyproject(name, root='.', template='~/templates/pyproject'):
     _copy_template(template_dir, root_dir, name)
 
 
+@task
 def test_colors():
     """Prints some strings with color output"""
     print colors.red("red text")
@@ -154,5 +159,4 @@ def _copy_template(template_dir, copy_to, project_name, target=None,
                 _make_writeable(path_new)
             except OSError:
                 sys.stderr.write("Notice: Couldn't set permission bits on %s. You're probably using an uncommon filesystem setup. No problem.\n" % path_new)
-
 

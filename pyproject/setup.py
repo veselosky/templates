@@ -21,16 +21,20 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
+with open('README.rst') as thefile:
+    README = thefile.read()
+
 setup(
     name="{{ project_name }}",
     version=__version__,
     packages=find_packages(),
     author="Vince Veselosky",
-    author_email="vince@control-escape.com",
+    author_email="vince@veselosky.com",
     description="",
+    long_description=README,
     license="MIT",
     url="",
-    # could also include long_description, download_url, classifiers, etc.
+    # could also include download_url, classifiers, etc.
 
     install_requires=[
     ],

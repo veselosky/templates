@@ -1,6 +1,7 @@
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 import sys
+from {{ project_name }} import __version__
 
 
 class PyTest(TestCommand):
@@ -22,7 +23,7 @@ class PyTest(TestCommand):
 
 setup(
     name="{{ project_name }}",
-    version="0.1",
+    version=__version__,
     packages=find_packages(),
     author="Vince Veselosky",
     author_email="vince@control-escape.com",

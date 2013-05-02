@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# {{ name }} documentation build configuration file, created by
+# {{ project_name }} documentation build configuration file, created by
 # sphinx-quickstart on Mon Jul  4 07:57:25 2011.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'{{ name }}'
+project = u'{{ project_name }}'
 copyright = u'2011, Vince Veselosky'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -211,7 +211,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'name', u'{{ name }} Documentation',
+    ('index', 'name', u'{{ project_name }} Documentation',
      [u'Vince Veselosky'], 1)
 ]
 

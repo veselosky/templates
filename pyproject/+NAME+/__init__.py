@@ -1,5 +1,5 @@
 """
-{{ project_name }} pakage
+{{ project_name }} package
 
 This file should NEVER import anything (unless it is from the standard
 library). It MUST remain importable by setup.py before any requirements
